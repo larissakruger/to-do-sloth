@@ -17,7 +17,7 @@
             <h3 id="slogan-text">Devagar, mas sempre!</h3>
             <div class="stat-container"> <!-- Estatísticas e progresso -->
                 <div class="details">
-                    <h3>Você consegue!</h3>
+                    <h3>Um passo de cada vez...</h3>
                     <div id="progressbar">
                         <div id="progress"></div>
                     </div>
@@ -30,6 +30,11 @@
                 <input id="task-input" placeholder="Adicionar tarefa...">
                 <button type="submit" id="add-task-btn"><i class="fa-solid fa-plus"></i></button>
             </form>
+            <div class="filters"> <!--- Adiciona os filtros-->
+                <button data-filter="all">Todas</button>
+                <button data-filter="pending">Pendentes</button>
+                <button data-filter="completed">Completas</button>
+            </div>
             <div class="todos-container"> <!-- Lista de tarefas -->
                 <ul id="task-list"></ul>
                 <img class="empty-image" src="img/preguiça-dormindo.PNG" alt="empty"> <!-- Imagem quando vazio -->

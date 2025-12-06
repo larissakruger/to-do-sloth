@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Elementos principais do app
     const taskInput = document.getElementById('task-input');
     const addTaskBtn = document.getElementById('add-task-btn');
     const taskList = document.getElementById('task-list');
@@ -8,117 +7,143 @@ document.addEventListener('DOMContentLoaded', () => {
     const progressBar = document.getElementById('progress');
     const progressNumbers = document.getElementById('numbers');
     const form = document.querySelector('.input-area');
+    const filters = document.querySelectorAll('.filters button');
 
+    let tasks = [];
+    let currentFilter = 'all';
 
-    // Mostra ou esconde imagem de vazio conforme tarefas
+    // Mostra ou esconde imagem de vazio
     const toggleEmptyState = () => {
         emptyImage.style.display = taskList.children.length === 0 ? 'block' : 'none';
         todosContainer.style.width = taskList.children.length > 0 ? '100%' : '50%';
     };
 
-
     // Atualiza barra e números de progresso
-    const updateProgress = (checkCompletion = true) => {
-        const totalTasks = taskList.children.length;
-        const completedTasks = taskList.querySelectorAll('.checkbox:checked').length;
+    const updateProgress = () => {
+        const totalTasks = tasks.length;
+        const completedTasks = tasks.filter(t => t.completed).length;
 
         progressBar.style.width = totalTasks ? `${(completedTasks / totalTasks) * 100}%` : '0%';
         progressNumbers.textContent = `${completedTasks} / ${totalTasks}`;
-        if(checkCompletion && totalTasks > 0 && completedTasks === totalTasks) {
+
+        if(totalTasks > 0 && completedTasks === totalTasks) {
             Confetti();
         }
     };
 
     // Salva tarefas no localStorage
-    const saveTasksLocalStorage = () => {
-        const tasks = Array.from(taskList.querySelectorAll('li')).map(li => ({
-            text: li.querySelector('span').textContent,
-            completed: li.querySelector('.checkbox').checked
-        }));
+    const saveTasks = () => {
         localStorage.setItem('tasks', JSON.stringify(tasks));
     };
 
-    // Carrega tarefas do localStorage ao iniciar
-    const loadTasksFromLocalStorage = () => {
+    // Carrega tarefas do localStorage
+    const loadTasks = () => {
         const savedTasks = JSON.parse(localStorage.getItem('tasks')) || [];
-        if (Array.isArray(savedTasks)) {
-            savedTasks.forEach(({text, completed}) => addTask(text, completed, false));
-        }
+        tasks = savedTasks;
+        renderTasks();
+    };
+
+    // Selecionar os botões de filtro
+    const filterButtons = document.querySelectorAll('.filters button'); 
+
+    filterButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        filterButtons.forEach(btn => btn.classList.remove('selected'));
+        button.classList.add('selected');
+
+    });
+});
+
+document.querySelector('.filters button:first-child').classList.add('selected');
+
+    // Aplicando filtro e ordenação
+    const renderTasks = () => {
+        taskList.innerHTML = '';
+
+        let filteredTasks = tasks;
+        if(currentFilter === 'pending') filteredTasks = tasks.filter(t => !t.completed);
+        if(currentFilter === 'completed') filteredTasks = tasks.filter(t => t.completed);
+
+        filteredTasks.sort((a, b) => a.completed - b.completed);
+
+        // Cria elementos <li>
+        filteredTasks.forEach((task, index) => {
+            const li = document.createElement('li');
+            li.innerHTML = `
+                <input type="checkbox" class="checkbox" ${task.completed ? 'checked' : ''}/>
+                <span>${task.text}</span>
+                <div class="task-buttons">
+                    <button class="edit-btn"><i class="fa-solid fa-pen"></i></button>
+                    <button class="delete-btn"><i class="fa-solid fa-trash"></i></button>
+                </div>
+            `;
+
+            const checkbox = li.querySelector('.checkbox');
+            const editBtn = li.querySelector('.edit-btn');
+
+            if(task.completed) {
+                li.classList.add('completed');
+                editBtn.disabled = true;
+                editBtn.style.opacity = '0.5';
+                editBtn.style.pointerEvents = 'none';
+            }
+
+            // Checkbox evento
+            checkbox.addEventListener('change', () => {
+                task.completed = checkbox.checked;
+                renderTasks();
+                saveTasks();
+            });
+
+            // Editar tarefa
+            editBtn.addEventListener('click', () => {
+                if(!task.completed) {
+                    taskInput.value = task.text;
+                    tasks.splice(tasks.indexOf(task), 1);
+                    renderTasks();
+                    saveTasks();
+                }
+            });
+
+            // Deletar tarefa
+            li.querySelector('.delete-btn').addEventListener('click', () => {
+                tasks.splice(tasks.indexOf(task), 1);
+                renderTasks();
+                saveTasks();
+            });
+
+            taskList.appendChild(li);
+        });
+
         toggleEmptyState();
         updateProgress();
     };
 
-    // Adiciona nova tarefa à lista
-    const addTask = (text, completed = false, checkCompletion = true) => {
-        const taskText = (typeof text === 'string' && text.trim()) ? text.trim() : taskInput.value.trim();
-        if(!taskText) {
-            return;
-        }
+    // Adiciona nova tarefa
+    const addTask = (text) => {
+        const taskText = text?.trim() || taskInput.value.trim();
+        if(!taskText) return;
 
-        const li = document.createElement('li');
-        li.innerHTML = `
-        <input type="checkbox" class="checkbox" ${completed ? 'checked' : ''} />
-        <span>${taskText}</span>
-        <div class="task-buttons">
-            <button class="edit-btn"><i class="fa-solid fa-pen"></i></button>
-            <button class="delete-btn"><i class="fa-solid fa-trash"></i></button>
-        </div>
-        `;
-
-        const checkbox = li.querySelector('.checkbox');
-        const editBtn = li.querySelector('.edit-btn');
-
-        if (completed) {
-            li.classList.add('completed');
-            editBtn.disabled = true;
-            editBtn.style.opacity = '0.5';
-            editBtn.style.pointerEvents = 'none';
-        }
-
-        // Marca/desmarca tarefa como concluída
-        checkbox.addEventListener('change', () => {
-            const isChecked = checkbox.checked;
-            li.classList.toggle('completed', isChecked);
-            editBtn.disabled = isChecked;
-            editBtn.style.opacity = isChecked ? '0.5' : '1';
-            editBtn.style.pointerEvents = isChecked ? 'none' : 'auto';
-            updateProgress();
-            saveTasksLocalStorage();
-        });
-
-        // Edita tarefa
-        editBtn.addEventListener('click', () => {
-            if(!checkbox.checked) {
-                taskInput.value = li.querySelector('span').textContent;
-                li.remove();
-                toggleEmptyState();
-                updateProgress(false);
-                saveTasksLocalStorage();
-            };
-        });
-
-        // Remove tarefa da lista
-        li.querySelector('.delete-btn').addEventListener('click', () => {
-            li.remove();
-            toggleEmptyState();
-            updateProgress();
-            saveTasksLocalStorage();
-        });
-
-        taskList.appendChild(li);
+        tasks.push({ text: taskText, completed: false });
         taskInput.value = '';
-        toggleEmptyState();
-        updateProgress(checkCompletion);
-        saveTasksLocalStorage();
+        renderTasks();
+        saveTasks();
     };
 
-    // Adiciona tarefa ao enviar o formulário
-    form.addEventListener('submit', (e) => {
+    // Eventos
+    form.addEventListener('submit', e => {
         e.preventDefault();
         addTask();
     });
 
-    //Rotação de Slogans
+    filters.forEach(btn => {
+        btn.addEventListener('click', () => {
+            currentFilter = btn.dataset.filter;
+            renderTasks();
+        });
+    });
+
+    // Rotação de slogans
     const slogans = [
         "Sua lista. O pesadelo da preguiça",
         "Devagar, mas sempre!",
@@ -127,27 +152,19 @@ document.addEventListener('DOMContentLoaded', () => {
         "Tarefa feita é tarefa riscada"
     ];
     let sloganIndex = 0;
-
     const sloganElement = document.getElementById('slogan-text');
-
-    const rotateSlogans = () => {
+    setInterval(() => {
         sloganIndex = (sloganIndex + 1) % slogans.length;
         sloganElement.textContent = slogans[sloganIndex];
-    };
-    
-    // Intervalo para função rotateSlogans
-    setInterval(rotateSlogans, 10000); 
-    
-    loadTasksFromLocalStorage(); // Inicializa lista de tarefas
-    
+    }, 10000);
+
+    // Inicializa
+    loadTasks();
 });
 
-// Função para efeito de confete ao completar todas as tarefas
+// Confete
 const Confetti = () => {
-    if (typeof confetti !== 'function') {
-        console.warn('Confetti library not available');
-        return;
-    }
+    if (typeof confetti !== 'function') return;
 
     const defaults = {
         spread: 360,
@@ -160,19 +177,8 @@ const Confetti = () => {
     };
 
     function shoot() {
-        confetti({
-            ...defaults,
-            particleCount: 40,
-            scalar: 1.2,
-            shapes: ['star'],
-        });
-
-        confetti({
-            ...defaults,
-            particleCount: 10,
-            scalar: 0.75,
-            shapes: ['circle'],
-        });
+        confetti({ ...defaults, particleCount: 40, scalar: 1.2, shapes: ['star'] });
+        confetti({ ...defaults, particleCount: 10, scalar: 0.75, shapes: ['circle'] });
     }
 
     shoot();
