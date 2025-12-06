@@ -1,18 +1,21 @@
-# Xô Preguiça: Gerenciador de Tarefas | to-do-sloth
+# Xô Preguiça - Lista de Tarefas
 
 O aplicativo web é Lista de Tarefas (To-Do List) para gerenciar tarefas.
 Projeto pessoal desenvolvido para aprender e praticar **HTML5**, **CSS3** e **JavaScript Vanilla**.
 
 ## ✨ Funcionalidades
 
--   **Adicionar tarefas** - Crie novas tarefas facilmente ao clicar em "+" ou pressione Enter
--   **Marcar como concluído** - Checkbox interativo com visual feedback
--   **Editar tarefas** - Modifique tarefas existentes
--   **Deletar tarefas** - Remova tarefas da lista
--   **Barra de progresso** - Acompanhe o progresso em tempo real
--   **Armazenamento local** - Tarefas são salvas no localStorage (persistem entre sessões)
--   **Efeito visual** - Confete ao completar todas as tarefas
--   **Responsivo** - Funciona perfeitamente em desktop, tablet e mobile
+-   **Adicionar Tarefas** - Crie novas tarefas facilmente clicando em + ou pressionando Enter.
+-   **Marcar como Concluído** - Checkbox interativo com feedback visual imediato.
+-   **Editar Tarefas** - Modifique tarefas existentes com facilidade.
+-   **Deletar Tarefas** - Remova tarefas da lista.
+-   **Filtragem por Status** - Visualize a lista completa, apenas tarefas pendentes ou apenas as completadas.
+-   **Ordenação Inteligente** - Tarefas pendentes sempre aparecem no topo, e as completadas no final da lista, independentemente do filtro ativo.
+-   **Barra de Progresso** - Acompanhe o progresso em tempo real com uma barra de status.
+-   **Armazenamento Local** - Tarefas são salvas no localStorage, garantindo que persistam entre as sessões.
+-   **Efeito Visual de Celebração** - Confete aparece na tela ao completar todas as tarefas.
+-   **Responsividade** - Funciona perfeitamente em desktop, tablet e mobile.
+
 
 ## 📁 Estrutura do Projeto
 
@@ -86,7 +89,7 @@ As tarefas são salvas automaticamente no `localStorage` do navegador:
 </p>
 
 <p align="center">
-  <strong>Visualize todas as suas tarefas, marque progresso e acompanhe o desempenho com a barra interativa.</strong>
+  <strong>Adicione todas as suas tarefas, marque progresso e acompanhe o desempenho com a barra interativa.</strong>
 </p>
 
 <p align="center">
@@ -102,6 +105,5 @@ As tarefas são salvas automaticamente no `localStorage` do navegador:
 </p>
 
 <p align="center">
-  <strong>Confete anima ao completar todas as tarefas! Celebre suas conquistas.</strong>
+  <strong>Confete anima ao completar todas as tarefas! Celebre ter vencido a preguiça!</strong>
 </p>
-#
