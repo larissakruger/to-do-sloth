@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-do App</title>
+    <link rel="stylesheet" href="styles.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" /> <!-- Ícones -->
+
+</head>
+<body>
+    <!-- Área principal do app -->
+    <div class="container">
+        <div class="todo-app">
+            <h1>Xô Preguiça!</h1>
+            <h3 id="slogan-text">Devagar, mas sempre!</h3>
+            <div class="stat-container"> <!-- Estatísticas e progresso -->
+                <div class="details">
+                    <h3>Um passo de cada vez...</h3>
+                    <div id="progressbar">
+                        <div id="progress"></div>
+                    </div>
+                </div>
+                <div class="stats-number"> <!-- Tarefas concluídas/total -->
+                    <p id="numbers">0 /0</p>
+                </div>
+            </div>
+            <form class="input-area"> <!-- Adicionar nova tarefa -->
+                <input id="task-input" placeholder="Adicionar tarefa...">
+                <button type="submit" id="add-task-btn"><i class="fa-solid fa-plus"></i></button>
+            </form>
+            <div class="filters"> <!--- Adiciona os filtros-->
+                <button data-filter="all">Todas</button>
+                <button data-filter="pending">Pendentes</button>
+                <button data-filter="completed">Completas</button>
+            </div>
+            <div class="todos-container"> <!-- Lista de tarefas -->
+                <ul id="task-list"></ul>
+                <img class="empty-image" src="img/preguiça-dormindo.png" alt="empty"> <!-- Imagem quando vazio -->
+            </div>
+        </div>
+    </div>
+</body>
+
+<script src="scripts.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tsparticles/confetti@3.0.3/tsparticles.confetti.bundle.min.js"></script> <!-- Efeito de confete -->
+
+</html>
