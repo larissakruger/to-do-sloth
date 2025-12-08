@@ -39,15 +39,6 @@ to-do_app/
 - **CSS3** - Flexbox, Grid, media queries, animações e efeitos visuais
 - **JavaScript Vanilla** - Eventos, manipulação do DOM, localStorage e lógica funcional
 
-## 📚 Objetivo de Aprendizado
-
-Este é um projeto pessoal criado para aprender e praticar:
-
-- **HTML5** - Estrutura semântica, formulários e manipulação do DOM
-- **CSS3** - Flexbox, Grid, media queries, animações e efeitos visuais
-- **JavaScript Vanilla** - Eventos, manipulação do DOM, localStorage e lógica funcional
-
-
 ## 🚀 Como Usar
 
 1. **Clone o repositório** ou baixe os arquivos:
