@@ -44,7 +44,7 @@ to-do_app/
 1. **Clone o repositório** ou baixe os arquivos:
    ```bash
    git clone https://github.com/larissakruger/to-do-sloth.git
-   cd to-do_app
+   cd to-do-sloth
    ```
 
 2. **Abra o arquivo**:
